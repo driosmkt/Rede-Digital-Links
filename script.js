@@ -1,17 +1,23 @@
 // --- CONFIGURAÇÃO ---
-// Para adicionar, remover ou editar secretarias, altere esta lista.
+// Lista completa e oficial de secretarias.
 const secretarias = [
     { name: 'Saúde', id: 'saude' },
-    { name: 'Educação, Cultura e Esporte', id: 'educacao' },
-    { name: 'Desenvolvimento Econômico', id: 'desenvolvimento_economico' },
-    { name: 'Infraestrutura e Mobilidade', id: 'infraestrutura' },
-    { name: 'Assistência Social', id: 'assistencia_social' },
+    { name: 'Educação, Cultura e Esporte', id: 'educacao_cultura_esporte' },
+    { name: 'Desenvolvimento Econômico, Turismo e Inovação', id: 'desenvolvimento_economico' },
+    { name: 'Infraestrutura e Mobilidade', id: 'infraestrutura_mobilidade' },
+    { name: 'Assistência Social e Combate à Fome', id: 'assistencia_social' },
     { name: 'Comunicação', id: 'comunicacao' },
     { name: 'Desenvolvimento Rural', id: 'desenvolvimento_rural' },
+    { name: 'Serviços Públicos e Defesa Civil', id: 'servicos_publicos' },
     { name: 'Governo', id: 'governo' },
+    { name: 'Desenvolvimento Urbano, Habitação e Sustentabilidade', id: 'desenvolvimento_urbano' },
     { name: 'Casa Civil', id: 'casa_civil' },
+    { name: 'Planejamento, Gestão e Finanças', id: 'planejamento_financas' },
     { name: 'Segurança Pública', id: 'seguranca_publica' },
-    // Adicione mais secretarias aqui seguindo o mesmo formato
+    { name: 'Licitações e Contratos', id: 'licitacoes_contratos' },
+    { name: 'Receitas Municipais', id: 'receitas_municipais' },
+    { name: 'Procuradoria-Geral', id: 'procuradoria_geral' },
+    { name: 'Controladoria-Geral', id: 'controladoria_geral' }
 ];
 
 // --- FUNÇÃO DE LIMPEZA ---
@@ -22,13 +28,13 @@ function sanitizeCampaignName(name) {
     const p = new RegExp(a.split('').join('|'), 'g')
 
     return name.toString().toLowerCase()
-        .replace(/\s+/g, '-') // substitui espaços por -
+        .replace(/\s+/g, '_') // substitui espaços por _
         .replace(p, c => b.charAt(a.indexOf(c))) // substitui caracteres especiais
         .replace(/&/g, '-and-') // substitui & por 'and'
         .replace(/[^\w\-]+/g, '') // remove todos os caracteres não-alfanuméricos
-        .replace(/\-\-+/g, '-') // substitui múltiplos - por um único -
-        .replace(/^-+/, '') // remove - do início do texto
-        .replace(/-+$/, '') // remove - do final do texto
+        .replace(/\-\-+/g, '_') // substitui múltiplos - por um único _
+        .replace(/^-+/, '') // remove _ do início do texto
+        .replace(/-+$/, '') // remove _ do final do texto
 }
 
 
@@ -49,20 +55,17 @@ function generateLinks() {
         return;
     }
 
-    // Limpa e padroniza o nome da campanha
     const campaignName = sanitizeCampaignName(rawCampaignName);
-    resultsContainer.innerHTML = ''; // Limpa resultados antigos
+    resultsContainer.innerHTML = ''; 
 
     secretarias.forEach(secretaria => {
         const utmContent = secretaria.id;
         const utmSource = 'whatsapp';
         const utmMedium = 'grupo_secretaria';
-        const utmTerm = contentType; // Novo parâmetro!
+        const utmTerm = contentType;
 
-        // Constrói o link final com os parâmetros UTM
         const finalUrl = `${baseUrl}?utm_source=${utmSource}&utm_medium=${utmMedium}&utm_campaign=${campaignName}&utm_content=${utmContent}&utm_term=${utmTerm}`;
 
-        // Cria o HTML para cada item da lista
         const resultItem = document.createElement('div');
         resultItem.className = 'result-item';
         resultItem.innerHTML = `
@@ -75,20 +78,18 @@ function generateLinks() {
     });
 }
 
-// Função para copiar o link
 resultsContainer.addEventListener('click', function(e) {
     if (e.target.classList.contains('copy-btn')) {
         const button = e.target;
         const linkToCopy = button.previousElementSibling.textContent;
 
         navigator.clipboard.writeText(linkToCopy).then(() => {
-            // Feedback visual para o usuário
             button.textContent = 'Copiado!';
             button.classList.add('copied');
             setTimeout(() => {
                 button.textContent = 'Copiar';
                 button.classList.remove('copied');
-            }, 2000); // Volta ao normal depois de 2 segundos
+            }, 2000);
         }).catch(err => {
             console.error('Erro ao copiar o link: ', err);
             alert('Não foi possível copiar o link.');
@@ -96,5 +97,4 @@ resultsContainer.addEventListener('click', function(e) {
     }
 });
 
-// Event Listener para o botão
 generateBtn.addEventListener('click', generateLinks);
