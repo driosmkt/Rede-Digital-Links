@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Links UTM</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Gerador de Links UTM</h1>
+            <p>Cole o link do post, defina o nome da campanha e gere todos os links rastreáveis de uma vez.</p>
+        </header>
+
+        <main>
+            <div class="input-container">
+                <input type="url" id="baseUrl" placeholder="Cole o link do post ou matéria aqui">
+                <input type="text" id="campaignName" placeholder="Digite o nome da campanha (ex: inauguracao_upa)">
+                <button id="generateBtn">Gerar Links</button>
+            </div>
+
+            <div id="resultsContainer">
+                <!-- Os links gerados aparecerão aqui -->
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
