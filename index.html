@@ -1,50 +1,159 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Link Secretarias</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>Gerador de Link Secretarias</h1>
-            <p>Uma ferramenta para criar links rastreáveis de forma rápida e padronizada para todas as secretarias.</p>
-        </header>
+:root {
+    --primary-color: #FFC107;
+    --secondary-color: #2a2a38;
+    --dark-color: #1c1c24;
+    --light-color: #F8F9FA;
+    --font-family: 'Poppins', sans-serif;
+}
 
-        <main>
-            <div class="input-container">
-                <input type="url" id="baseUrl" placeholder="1. Cole o link do post ou matéria aqui">
-                <input type="text" id="campaignName" placeholder="2. Digite o nome da campanha (ex: Inauguração da UPA)">
-                <select id="contentType">
-                    <option value="" disabled selected>3. Escolha o formato do conteúdo</option>
-                    <option value="reels">Reels</option>
-                    <option value="post_estatico">Post Estático</option>
-                    <option value="carrossel">Carrossel</option>
-                    <option value="stories">Stories</option>
-                </select>
-                <button id="generateBtn">Gerar Links</button>
-            </div>
+body {
+    font-family: var(--font-family);
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 
-            <div id="resultsContainer">
-                <!-- Os links gerados aparecerão aqui -->
-            </div>
-        </main>
-    </div>
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    flex-grow: 1; /* Faz o container principal crescer */
+}
 
-    <footer>
-        <p class="footer-highlight">As informações foram coletadas e validadas no último dia útil.</p>
-        <div class="footer-credits">
-            <span>Núcleo Digital da Secretaria de Comunicação:</span>
-            <p>Raphael Rosendo e Douglas Rios</p>
-        </div>
-        <p class="footer-copyright">© 2025 Prefeitura de Petrolina – Secretaria de Comunicação</p>
-    </footer>
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
 
-    <script src="script.js"></script>
-</body>
-</html>
+header h1 {
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+input[type="url"], input[type="text"], select {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-family: var(--font-family);
+    background-color: var(--secondary-color);
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: var(--light-color);
+    box-sizing: border-box;
+}
+
+select option[disabled] {
+    color: #888;
+}
+
+button {
+    padding: 0.9rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background-color: var(--primary-color);
+    color: var(--dark-color);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #ffda4a;
+}
+
+#resultsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.result-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--secondary-color);
+    padding: 1rem;
+    border-radius: 6px;
+    gap: 1rem;
+}
+
+.secretaria-name {
+    font-weight: 600;
+    flex-shrink: 0;
+    width: 320px; /* Largura ajustada para nomes maiores */
+}
+
+.generated-link {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: var(--dark-color);
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.copy-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+}
+
+.copy-btn.copied {
+    background-color: #007bff;
+}
+
+/* --- ESTILOS DO RODAPÉ --- */
+footer {
+    width: 100%;
+    background-color: var(--secondary-color);
+    text-align: center;
+    padding: 2.5rem 0;
+    margin-top: 3rem;
+    border-top: 1px solid #444;
+}
+
+.footer-highlight {
+    color: var(--primary-color);
+    font-style: italic;
+    font-size: 0.9rem;
+    margin: 0 0 1.5rem 0;
+}
+
+.footer-credits {
+    color: #ccc;
+    font-size: 1.2rem; /* Tamanho maior para os nomes */
+    line-height: 1.2;
+    margin: 0 0 1.5rem 0;
+}
+
+.footer-credits span {
+    display: block;
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-bottom: 0.5rem;
+}
+
+.footer-credits p {
+    margin: 0;
+}
+
+.footer-copyright {
+    color: #888;
+    font-size: 0.9rem;
+    margin: 0;
+}
