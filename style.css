@@ -1,240 +1,159 @@
 :root {
-    --primary-color: #FFC107; /* Amarelo */
-    --secondary-color: #2a2a38; /* Roxo escuro/cinza do card */
-    --dark-color: #1c1c24; /* Fundo mais escuro */
-    --light-color: #F8F9FA; /* Branco/Cinza Claro */
+    --primary-color: #FFC107;
+    --secondary-color: #2a2a38;
+    --dark-color: #1c1c24;
+    --light-color: #F8F9FA;
     --font-family: 'Poppins', sans-serif;
-    --gold: #FFD700;
-    --silver: #C0C0C0;
-    --bronze: #CD7F32;
-    --success-color: #28a745;
 }
 
 body {
     font-family: var(--font-family);
-    margin: 0;
     background-color: var(--dark-color);
     color: var(--light-color);
-    line-height: 1.6;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 800px;
     margin: 0 auto;
-    padding: 1rem 2rem;
+    padding: 2rem;
+    flex-grow: 1; /* Faz o container principal crescer */
 }
 
 header {
     text-align: center;
-    padding: 3rem 2rem;
+    margin-bottom: 2rem;
 }
 
 header h1 {
-    font-size: 2.8rem;
     color: var(--primary-color);
     margin: 0;
-    font-weight: 700;
-    text-transform: uppercase;
 }
 
-/* Seção de Metas */
-.goals-section {
-    text-align: center;
-    padding: 2rem 0;
-    margin-bottom: 2rem;
-}
-
-.goals-section h2 {
-    font-size: 2.2rem;
-    margin-bottom: 2rem;
-    color: var(--light-color);
-}
-
-.goals-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-}
-
-.goal-card {
-    background-color: var(--secondary-color);
-    padding: 2rem;
-    border-radius: 12px;
-    border: 1px solid #444;
-}
-
-.goal-card h3 {
-    font-size: 1.4rem;
-    color: var(--primary-color);
-    margin-top: 0;
-}
-
-.goal-progress-container {
-    background-color: #444;
-    border-radius: 10px;
-    height: 20px;
-    overflow: hidden;
-    margin: 1.5rem 0;
-}
-
-.goal-progress-bar {
-    height: 100%;
-    width: 0; /* Começa em 0 para animar */
-    background-color: var(--success-color);
-    border-radius: 10px;
-    transition: width 1s ease-out;
-}
-
-.goal-details {
-    font-size: 1.1rem;
-    font-weight: 600;
-}
-
-.goal-percentage {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--light-color);
-    margin-top: 0.5rem;
-}
-
-/* Seção do Pódio */
-.podium-section {
-    padding: 2rem 0;
-    text-align: center;
-}
-
-.podium-section h2 {
-    font-size: 2.2rem;
-    margin-bottom: 2rem;
-    color: var(--light-color);
-}
-
-.podium-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    align-items: flex-start;
-    gap: 1.5rem;
-}
-
-.podium-card {
-    background-color: var(--secondary-color);
-    padding: 2rem;
-    border-radius: 12px;
-    text-align: left;
-    border: 1px solid #444;
+.input-container {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+input[type="url"], input[type="text"], select {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-family: var(--font-family);
+    background-color: var(--secondary-color);
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: var(--light-color);
     box-sizing: border-box;
 }
 
-.podium-card.rank-1 {
-    transform: scale(1.05);
-    border: 2px solid var(--gold);
-    box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
-}
-.podium-card.rank-2 { border-top: 5px solid var(--silver); }
-.podium-card.rank-3 { border-top: 5px solid var(--bronze); }
-
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1rem;
+select option[disabled] {
+    color: #888;
 }
 
-.card-header .name { font-size: 1.4rem; font-weight: 600; }
-
-.card-header .rank-badge {
+button {
+    padding: 0.9rem;
+    font-size: 1.1rem;
+    font-weight: bold;
     background-color: var(--primary-color);
     color: var(--dark-color);
-    padding: 0.3rem 0.8rem;
+    border: none;
     border-radius: 6px;
-    font-weight: bold;
-    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.card-divider { border: 0; height: 1px; background-color: #444; margin: 0.5rem 0 1.5rem 0; }
+button:hover {
+    background-color: #ffda4a;
+}
 
-.card-status { color: var(--primary-color); font-weight: bold; text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; }
-
-.card-metrics { margin-bottom: 2rem; flex-grow: 1; }
-
-.metric-bar-container { margin-bottom: 1.2rem; }
-
-.metric-label {
+#resultsContainer {
     display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.result-item {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    margin-bottom: 0.5rem;
+    background-color: var(--secondary-color);
+    padding: 1rem;
+    border-radius: 6px;
+    gap: 1rem;
+}
+
+.secretaria-name {
+    font-weight: 600;
+    flex-shrink: 0;
+    width: 320px; /* Largura ajustada para nomes maiores */
+}
+
+.generated-link {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: var(--dark-color);
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.copy-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.6rem 1rem;
     font-size: 0.9rem;
 }
-.metric-label span { color: #ccc; }
-.metric-label strong { color: var(--light-color); font-weight: 600; }
 
-.bar-background {
-    height: 12px;
-    background-color: #444;
-    border-radius: 6px;
-    overflow: hidden;
+.copy-btn.copied {
+    background-color: #007bff;
 }
 
-.bar-foreground {
-    height: 100%;
-    width: 0;
-    background-color: var(--primary-color);
-    border-radius: 6px;
-    transition: width 0.8s ease-out;
-}
-
-.card-button { display: block; background-color: var(--primary-color); color: var(--dark-color); padding: 0.8rem 1.5rem; text-decoration: none; border-radius: 8px; font-weight: bold; text-align: center; transition: background-color 0.3s ease; margin-top: auto; }
-.card-button:hover { background-color: #ffda4a; }
-
-/* Tabela do Ranking Geral */
-.general-ranking-section h2 { text-align: center; font-size: 2rem; margin-top: 4rem; margin-bottom: 2rem; }
-.table-container { background-color: var(--secondary-color); padding: 1rem; border-radius: 8px; overflow-x: auto; }
-#ranking-table { width: 100%; border-collapse: collapse; }
-#ranking-table th, #ranking-table td { padding: 1rem; text-align: left; border-bottom: 1px solid #444; }
-#ranking-table th { color: var(--primary-color); }
-.rank-position { font-weight: bold; text-align: center; }
-
-/* Rodapé */
+/* --- ESTILOS DO RODAPÉ ATUALIZADOS --- */
 footer {
+    width: 100%;
+    background-color: var(--secondary-color);
     text-align: center;
     padding: 2.5rem 0;
-    margin-top: 2rem;
-    background-color: var(--secondary-color);
+    margin-top: 3rem;
     border-top: 1px solid #444;
 }
 
-.footer-highlight {
-    color: var(--primary-color);
-    font-style: italic;
-    font-size: 0.9rem;
-    margin: 0 0 1rem 0;
+.footer-logo {
+    max-width: 150px; /* Controla o tamanho do logo */
+    margin-bottom: 1.5rem;
 }
 
 .footer-credits {
     color: #ccc;
-    font-size: 1rem;
-    margin: 0 0 1.5rem 0;
+    line-height: 1.2;
+    margin-bottom: 2rem;
 }
 
 .footer-credits span {
     display: block;
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #aaa;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.footer-credits p {
+    margin: 0;
+    font-size: 1.4rem; /* Tamanho maior para os nomes */
+    font-weight: 600;
+    color: var(--light-color);
 }
 
 .footer-copyright {
-    color: #777;
+    color: #888;
     font-size: 0.9rem;
     margin: 0;
-}
-
-/* Responsividade */
-@media (max-width: 992px) {
-    .podium-grid { grid-template-columns: 1fr; }
-    .podium-card.rank-1 { order: -2; transform: scale(1); }
-    .podium-card.rank-2 { order: -1; }
 }
