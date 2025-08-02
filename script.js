@@ -1,6 +1,5 @@
 // --- CONFIGURAÇÃO ---
 // Para adicionar, remover ou editar secretarias, altere esta lista.
-// 'name' é o que aparece na tela. 'id' é o que vai no link.
 const secretarias = [
     { name: 'Saúde', id: 'saude' },
     { name: 'Educação, Cultura e Esporte', id: 'educacao' },
@@ -15,30 +14,53 @@ const secretarias = [
     // Adicione mais secretarias aqui seguindo o mesmo formato
 ];
 
+// --- FUNÇÃO DE LIMPEZA ---
+// Converte "Nome da Campanha com Acento" para "nome_da_campanha_com_acento"
+function sanitizeCampaignName(name) {
+    const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
+    const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
+    const p = new RegExp(a.split('').join('|'), 'g')
+
+    return name.toString().toLowerCase()
+        .replace(/\s+/g, '-') // substitui espaços por -
+        .replace(p, c => b.charAt(a.indexOf(c))) // substitui caracteres especiais
+        .replace(/&/g, '-and-') // substitui & por 'and'
+        .replace(/[^\w\-]+/g, '') // remove todos os caracteres não-alfanuméricos
+        .replace(/\-\-+/g, '-') // substitui múltiplos - por um único -
+        .replace(/^-+/, '') // remove - do início do texto
+        .replace(/-+$/, '') // remove - do final do texto
+}
+
+
 // --- APLICAÇÃO ---
 const baseUrlInput = document.getElementById('baseUrl');
 const campaignNameInput = document.getElementById('campaignName');
+const contentTypeSelect = document.getElementById('contentType');
 const generateBtn = document.getElementById('generateBtn');
 const resultsContainer = document.getElementById('resultsContainer');
 
 function generateLinks() {
     const baseUrl = baseUrlInput.value.trim();
-    const campaignName = campaignNameInput.value.trim();
+    const rawCampaignName = campaignNameInput.value.trim();
+    const contentType = contentTypeSelect.value;
 
-    if (!baseUrl || !campaignName) {
-        alert('Por favor, preencha o link do post e o nome da campanha.');
+    if (!baseUrl || !rawCampaignName || !contentType) {
+        alert('Por favor, preencha todos os 3 campos para gerar os links.');
         return;
     }
 
+    // Limpa e padroniza o nome da campanha
+    const campaignName = sanitizeCampaignName(rawCampaignName);
     resultsContainer.innerHTML = ''; // Limpa resultados antigos
 
     secretarias.forEach(secretaria => {
         const utmContent = secretaria.id;
         const utmSource = 'whatsapp';
         const utmMedium = 'grupo_secretaria';
+        const utmTerm = contentType; // Novo parâmetro!
 
         // Constrói o link final com os parâmetros UTM
-        const finalUrl = `${baseUrl}?utm_source=${utmSource}&utm_medium=${utmMedium}&utm_campaign=${campaignName}&utm_content=${utmContent}`;
+        const finalUrl = `${baseUrl}?utm_source=${utmSource}&utm_medium=${utmMedium}&utm_campaign=${campaignName}&utm_content=${utmContent}&utm_term=${utmTerm}`;
 
         // Cria o HTML para cada item da lista
         const resultItem = document.createElement('div');
@@ -74,11 +96,5 @@ resultsContainer.addEventListener('click', function(e) {
     }
 });
 
-// Event Listeners
+// Event Listener para o botão
 generateBtn.addEventListener('click', generateLinks);
-// Permite gerar links pressionando Enter em qualquer um dos campos de texto
-campaignNameInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-        generateLinks();
-    }
-});
