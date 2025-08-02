@@ -3,93 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ranking da Corrida Digital - Rede Simão</title>
-    
-    <!-- Google Fonts -->
+    <title>Gerador de Link Secretarias</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
-    <!-- CSS Externo -->
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1>Gerador de Link Secretarias</h1>
+            <p>Uma ferramenta para criar links rastreáveis de forma rápida e padronizada para todas as secretarias.</p>
+        </header>
 
-    <header class="container">
-        <h1>Corrida Digital</h1>
-    </header>
-
-    <main class="container">
-        <!-- Seção de Metas Principais -->
-        <section class="goals-section">
-            <h2>Metas do Projeto</h2>
-            <div class="goals-grid">
-                <!-- Meta de Servidores Cadastrados -->
-                <div class="goal-card">
-                    <h3>Servidores Cadastrados</h3>
-                    <div class="goal-progress-container">
-                        <div class="goal-progress-bar" id="servers-progress-bar"></div>
-                    </div>
-                    <div class="goal-details">
-                        <span id="current-servers">0</span> / <span>1.000</span>
-                    </div>
-                    <p class="goal-percentage" id="servers-percentage">0%</p>
-                </div>
-
-                <!-- Meta de Seguidores -->
-                <div class="goal-card">
-                    <h3>Seguidores no Instagram</h3>
-                    <div class="goal-progress-container">
-                        <div class="goal-progress-bar" id="followers-progress-bar"></div>
-                    </div>
-                    <div class="goal-details">
-                        <span id="current-followers">0</span> / <span>150.000</span>
-                    </div>
-                    <p class="goal-percentage" id="followers-percentage">0%</p>
-                </div>
+        <main>
+            <div class="input-container">
+                <input type="url" id="baseUrl" placeholder="1. Cole o link do post ou matéria aqui">
+                <input type="text" id="campaignName" placeholder="2. Digite o nome da campanha (ex: Inauguração da UPA)">
+                <select id="contentType">
+                    <option value="" disabled selected>3. Escolha o formato do conteúdo</option>
+                    <option value="reels">Reels</option>
+                    <option value="post_estatico">Post Estático</option>
+                    <option value="carrossel">Carrossel</option>
+                    <option value="stories">Stories</option>
+                </select>
+                <button id="generateBtn">Gerar Links</button>
             </div>
-        </section>
 
-        <!-- Seção do Pódio para os 3 primeiros -->
-        <section class="podium-section">
-            <h2>🏆 Pódio das Secretarias 🏆</h2>
-            <div class="podium-grid" id="podium-container">
-                <!-- Cards do pódio serão inseridos aqui via JavaScript -->
+            <div id="resultsContainer">
+                <!-- Os links gerados aparecerão aqui -->
             </div>
-        </section>
+        </main>
+    </div>
 
-        <!-- Seção do Ranking Geral -->
-        <section class="general-ranking-section">
-            <h2>Ranking Geral</h2>
-            <div class="table-container">
-                <table id="ranking-table">
-                    <thead>
-                        <tr>
-                            <th style="text-align: center;">Pos.</th>
-                            <th>Secretaria</th>
-                            <th>Cadastros</th>
-                            <th>Cliques</th>
-                            <th>Membros</th>
-                        </tr>
-                    </thead>
-                    <tbody id="general-ranking-body">
-                        <!-- Linhas do ranking geral serão inseridas aqui via JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-        </section>
-    </main>
-
-    <footer class="container">
-        <p class="footer-highlight">As informações foram coletadas e validadas no último dia útil.</p>
-        <p class="footer-credits">
+    <!-- RODAPÉ ATUALIZADO -->
+    <footer>
+        <img src="https://driosmkt.github.io/RedeDigital/logo.png" alt="Logo Rede Digital Simão" class="footer-logo">
+        <div class="footer-credits">
             <span>Núcleo Digital da Secretaria de Comunicação:</span>
-            Raphael Rosendo e Douglas Rios
-        </p>
-        <p class="footer-copyright">© 2025 Prefeitura de Petrolina - Secretaria de Comunicação</p>
+            <p>Raphael Rosendo e Douglas Rios</p>
+        </div>
+        <p class="footer-copyright">© 2025 Prefeitura de Petrolina – Secretaria de Comunicação</p>
     </footer>
 
-    <!-- JavaScript Externo -->
     <script src="script.js"></script>
 </body>
 </html>
