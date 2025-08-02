@@ -117,7 +117,7 @@ button:hover {
     background-color: #007bff;
 }
 
-/* --- ESTILOS DO RODAPÉ --- */
+/* --- ESTILOS DO RODAPÉ ATUALIZADOS --- */
 footer {
     width: 100%;
     background-color: var(--secondary-color);
@@ -127,29 +127,29 @@ footer {
     border-top: 1px solid #444;
 }
 
-.footer-highlight {
-    color: var(--primary-color);
-    font-style: italic;
-    font-size: 0.9rem;
-    margin: 0 0 1.5rem 0;
+.footer-logo {
+    max-width: 150px; /* Controla o tamanho do logo */
+    margin-bottom: 1.5rem;
 }
 
 .footer-credits {
     color: #ccc;
-    font-size: 1.2rem; /* Tamanho maior para os nomes */
     line-height: 1.2;
-    margin: 0 0 1.5rem 0;
+    margin-bottom: 2rem;
 }
 
 .footer-credits span {
     display: block;
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #aaa;
     margin-bottom: 0.5rem;
 }
 
 .footer-credits p {
     margin: 0;
+    font-size: 1.4rem; /* Tamanho maior para os nomes */
+    font-weight: 600;
+    color: var(--light-color);
 }
 
 .footer-copyright {
