@@ -1,5 +1,5 @@
 // --- CONFIGURAÇÃO ---
-// Lista completa e oficial de secretarias.
+// Lista completa e oficial de secretarias e autarquias.
 const secretarias = [
     { name: 'Saúde', id: 'saude' },
     { name: 'Educação, Cultura e Esporte', id: 'educacao_cultura_esporte' },
@@ -17,7 +17,11 @@ const secretarias = [
     { name: 'Licitações e Contratos', id: 'licitacoes_contratos' },
     { name: 'Receitas Municipais', id: 'receitas_municipais' },
     { name: 'Procuradoria-Geral', id: 'procuradoria_geral' },
-    { name: 'Controladoria-Geral', id: 'controladoria_geral' }
+    { name: 'Controladoria-Geral', id: 'controladoria_geral' },
+    // --- NOVAS ENTIDADES ADICIONADAS ---
+    { name: 'Ammpla', id: 'ammpla' },
+    { name: 'Autarquia 1', id: 'autarquia_1' },
+    { name: 'Autarquia 2', id: 'autarquia_2' }
 ];
 
 // --- FUNÇÃO DE LIMPEZA ---
