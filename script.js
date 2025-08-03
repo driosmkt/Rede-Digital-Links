@@ -1,133 +1,100 @@
-document.addEventListener("DOMContentLoaded", () => {
-    
-    // --- DADOS DAS SECRETARIAS ---
-    const secretariatsData = [
-        { name: 'Saúde', cadastros: 250, cliques: 580, membros: 240 },
-        { name: 'Educação, Cultura e Esporte', cadastros: 235, cliques: 510, membros: 220 },
-        { name: 'Desenvolvimento Econômico, Turismo e Inovação', cadastros: 218, cliques: 490, membros: 205 },
-        { name: 'Infraestrutura e Mobilidade', cadastros: 190, cliques: 410, membros: 185 },
-        { name: 'Assistência Social e Combate à Fome', cadastros: 182, cliques: 390, membros: 170 },
-        { name: 'Comunicação', cadastros: 170, cliques: 450, membros: 165 },
-        { name: 'Desenvolvimento Rural', cadastros: 155, cliques: 320, membros: 150 },
-        { name: 'Serviços Públicos e Defesa Civil', cadastros: 140, cliques: 300, membros: 135 },
-        { name: 'Governo', cadastros: 125, cliques: 280, membros: 120 },
-        { name: 'Desenvolvimento Urbano, Habitação e Sustentabilidade', cadastros: 115, cliques: 250, membros: 110 },
-        { name: 'Casa Civil', cadastros: 108, cliques: 240, membros: 100 },
-        { name: 'Planejamento, Gestão e Finanças', cadastros: 95, cliques: 210, membros: 90 },
-        { name: 'Segurança Pública', cadastros: 88, cliques: 190, membros: 85 },
-        { name: 'Licitações e Contratos', cadastros: 70, cliques: 150, membros: 65 },
-        { name: 'Receitas Municipais', cadastros: 65, cliques: 140, membros: 60 },
-        { name: 'Procuradoria-Geral do Município', cadastros: 50, cliques: 110, membros: 48 },
-        { name: 'Controladoria-Geral do Município', cadastros: 45, cliques: 100, membros: 42 }
-    ];
+// --- CONFIGURAÇÃO ---
+// Lista completa e oficial de secretarias.
+const secretarias = [
+    { name: 'Saúde', id: 'saude' },
+    { name: 'Educação, Cultura e Esporte', id: 'educacao_cultura_esporte' },
+    { name: 'Desenvolvimento Econômico, Turismo e Inovação', id: 'desenvolvimento_economico' },
+    { name: 'Infraestrutura e Mobilidade', id: 'infraestrutura_mobilidade' },
+    { name: 'Assistência Social e Combate à Fome', id: 'assistencia_social' },
+    { name: 'Comunicação', id: 'comunicacao' },
+    { name: 'Desenvolvimento Rural', id: 'desenvolvimento_rural' },
+    { name: 'Serviços Públicos e Defesa Civil', id: 'servicos_publicos' },
+    { name: 'Governo', id: 'governo' },
+    { name: 'Desenvolvimento Urbano, Habitação e Sustentabilidade', id: 'desenvolvimento_urbano' },
+    { name: 'Casa Civil', id: 'casa_civil' },
+    { name: 'Planejamento, Gestão e Finanças', id: 'planejamento_financas' },
+    { name: 'Segurança Pública', id: 'seguranca_publica' },
+    { name: 'Licitações e Contratos', id: 'licitacoes_contratos' },
+    { name: 'Receitas Municipais', id: 'receitas_municipais' },
+    { name: 'Procuradoria-Geral', id: 'procuradoria_geral' },
+    { name: 'Controladoria-Geral', id: 'controladoria_geral' }
+];
 
-    // --- DADOS DAS METAS ---
-    const goalsData = {
-        servers: {
-            current: 250, // Total de cadastros (soma dos servidores)
-            target: 1000
-        },
-        followers: {
-            // IMPORTANTE: Atualize este valor com o número atual de seguidores
-            current: 95000, 
-            target: 150000
-        }
-    };
+// --- FUNÇÃO DE LIMPEZA ---
+// Converte "Nome da Campanha com Acento" para "nome_da_campanha_com_acento"
+function sanitizeCampaignName(name) {
+    const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
+    const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
+    const p = new RegExp(a.split('').join('|'), 'g')
 
-    // Critérios de classificação: Cadastros > Cliques > Membros
-    secretariatsData.sort((a, b) => b.cadastros - a.cadastros || b.cliques - a.cliques || b.membros - a.membros);
+    return name.toString().toLowerCase()
+        .replace(/\s+/g, '_') // substitui espaços por _
+        .replace(p, c => b.charAt(a.indexOf(c))) // substitui caracteres especiais
+        .replace(/&/g, '-and-') // substitui & por 'and'
+        .replace(/[^\w\-]+/g, '') // remove todos os caracteres não-alfanuméricos
+        .replace(/\-\-+/g, '_') // substitui múltiplos - por um único _
+        .replace(/^-+/, '') // remove _ do início do texto
+        .replace(/-+$/, '') // remove _ do final do texto
+}
 
-    const podiumContainer = document.getElementById('podium-container');
-    const generalRankingBody = document.getElementById('general-ranking-body');
 
-    // Função para renderizar as metas
-    function renderGoals() {
-        const { servers, followers } = goalsData;
+// --- APLICAÇÃO ---
+const baseUrlInput = document.getElementById('baseUrl');
+const campaignNameInput = document.getElementById('campaignName');
+const contentTypeSelect = document.getElementById('contentType');
+const generateBtn = document.getElementById('generateBtn');
+const resultsContainer = document.getElementById('resultsContainer');
 
-        // Meta de Servidores
-        const serversPercentage = (servers.current / servers.target) * 100;
-        document.getElementById('current-servers').textContent = servers.current;
-        document.getElementById('servers-progress-bar').style.width = `${serversPercentage}%`;
-        document.getElementById('servers-percentage').textContent = `${serversPercentage.toFixed(1)}%`;
+function generateLinks() {
+    const baseUrl = baseUrlInput.value.trim();
+    const rawCampaignName = campaignNameInput.value.trim();
+    const contentType = contentTypeSelect.value;
 
-        // Meta de Seguidores
-        const followersPercentage = (followers.current / followers.target) * 100;
-        document.getElementById('current-followers').textContent = followers.current.toLocaleString('pt-BR');
-        document.getElementById('followers-progress-bar').style.width = `${followersPercentage}%`;
-        document.getElementById('followers-percentage').textContent = `${followersPercentage.toFixed(1)}%`;
+    if (!baseUrl || !rawCampaignName || !contentType) {
+        alert('Por favor, preencha todos os 3 campos para gerar os links.');
+        return;
     }
 
-    // Função para renderizar os rankings
-    function renderRankings() {
-        const podiumData = secretariatsData.slice(0, 3);
-        const generalRankingData = secretariatsData.slice(3);
+    const campaignName = sanitizeCampaignName(rawCampaignName);
+    resultsContainer.innerHTML = ''; 
 
-        podiumContainer.innerHTML = podiumData.map((secretariat, index) => {
-            return createPodiumCard(secretariat, index + 1);
-        }).join('');
-        
-        generalRankingBody.innerHTML = generalRankingData.map((secretariat, index) => {
-            const rank = index + 4;
-            return `
-                <tr>
-                    <td class="rank-position">${rank}º</td>
-                    <td>${secretariat.name}</td>
-                    <td>${secretariat.cadastros}</td>
-                    <td>${secretariat.cliques}</td>
-                    <td>${secretariat.membros}</td>
-                </tr>
-            `;
-        }).join('');
+    secretarias.forEach(secretaria => {
+        const utmContent = secretaria.id;
+        const utmSource = 'whatsapp';
+        const utmMedium = 'grupo_secretaria';
+        const utmTerm = contentType;
 
-        setTimeout(() => {
-            document.querySelectorAll('.bar-foreground').forEach(bar => {
-                bar.style.width = bar.dataset.width;
-            });
-        }, 100);
-    }
+        const finalUrl = `${baseUrl}?utm_source=${utmSource}&utm_medium=${utmMedium}&utm_campaign=${campaignName}&utm_content=${utmContent}&utm_term=${utmTerm}`;
 
-    function createPodiumCard(data, rank) {
-        const rankStatus = { 1: 'LÍDER ABSOLUTO', 2: 'EXCELENTE DESEMPENHO', 3: 'DESTAQUE NO PÓDIO' };
-        const maxValues = { cadastros: 260, cliques: 600, membros: 250 };
-
-        const cadastrosPercent = Math.min((data.cadastros / maxValues.cadastros) * 100, 100);
-        const cliquesPercent = Math.min((data.cliques / maxValues.cliques) * 100, 100);
-        const membrosPercent = Math.min((data.membros / maxValues.membros) * 100, 100);
-
-        return `
-            <div class="podium-card rank-${rank}">
-                <div class="card-header">
-                    <span class="name">${data.name}</span>
-                    <span class="rank-badge">${rank}º</span>
-                </div>
-                <hr class="card-divider">
-                <p class="card-status">${rankStatus[rank]}</p>
-                <div class="card-metrics">
-                    <div class="metric-bar-container">
-                        <div class="metric-label"><span>Cadastros</span><strong>${data.cadastros}</strong></div>
-                        <div class="bar-background">
-                            <div class="bar-foreground" data-width="${cadastrosPercent}%"></div>
-                        </div>
-                    </div>
-                    <div class="metric-bar-container">
-                        <div class="metric-label"><span>Cliques no Link</span><strong>${data.cliques}</strong></div>
-                        <div class="bar-background">
-                            <div class="bar-foreground" data-width="${cliquesPercent}%"></div>
-                        </div>
-                    </div>
-                    <div class="metric-bar-container">
-                        <div class="metric-label"><span>Membros no Grupo</span><strong>${data.membros}</strong></div>
-                        <div class="bar-background">
-                            <div class="bar-foreground" data-width="${membrosPercent}%"></div>
-                        </div>
-                    </div>
-                </div>
-                <a href="#" class="card-button">Ver Detalhes</a>
-            </div>
+        const resultItem = document.createElement('div');
+        resultItem.className = 'result-item';
+        resultItem.innerHTML = `
+            <span class="secretaria-name">${secretaria.name}</span>
+            <span class="generated-link">${finalUrl}</span>
+            <button class="copy-btn">Copiar</button>
         `;
-    }
+        
+        resultsContainer.appendChild(resultItem);
+    });
+}
 
-    // Inicializa a renderização de tudo
-    renderGoals();
-    renderRankings();
+resultsContainer.addEventListener('click', function(e) {
+    if (e.target.classList.contains('copy-btn')) {
+        const button = e.target;
+        const linkToCopy = button.previousElementSibling.textContent;
+
+        navigator.clipboard.writeText(linkToCopy).then(() => {
+            button.textContent = 'Copiado!';
+            button.classList.add('copied');
+            setTimeout(() => {
+                button.textContent = 'Copiar';
+                button.classList.remove('copied');
+            }, 2000);
+        }).catch(err => {
+            console.error('Erro ao copiar o link: ', err);
+            alert('Não foi possível copiar o link.');
+        });
+    }
 });
+
+generateBtn.addEventListener('click', generateLinks);
