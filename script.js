@@ -18,29 +18,18 @@ const secretarias = [
     { name: 'Receitas Municipais', id: 'receitas_municipais' },
     { name: 'Procuradoria-Geral', id: 'procuradoria_geral' },
     { name: 'Controladoria-Geral', id: 'controladoria_geral' },
-    // --- NOVAS ENTIDADES ADICIONADAS ---
     { name: 'Ammpla', id: 'ammpla' },
     { name: 'Autarquia 1', id: 'autarquia_1' },
     { name: 'Autarquia 2', id: 'autarquia_2' }
 ];
 
 // --- FUNÇÃO DE LIMPEZA ---
-// Converte "Nome da Campanha com Acento" para "nome_da_campanha_com_acento"
 function sanitizeCampaignName(name) {
     const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
     const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
     const p = new RegExp(a.split('').join('|'), 'g')
-
-    return name.toString().toLowerCase()
-        .replace(/\s+/g, '_') // substitui espaços por _
-        .replace(p, c => b.charAt(a.indexOf(c))) // substitui caracteres especiais
-        .replace(/&/g, '-and-') // substitui & por 'and'
-        .replace(/[^\w\-]+/g, '') // remove todos os caracteres não-alfanuméricos
-        .replace(/\-\-+/g, '_') // substitui múltiplos - por um único _
-        .replace(/^-+/, '') // remove _ do início do texto
-        .replace(/-+$/, '') // remove _ do final do texto
+    return name.toString().toLowerCase().replace(/\s+/g, '_').replace(p, c => b.charAt(a.indexOf(c))).replace(/&/g, '-and-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '_').replace(/^-+/, '').replace(/-+$/, '')
 }
-
 
 // --- APLICAÇÃO ---
 const baseUrlInput = document.getElementById('baseUrl');
@@ -68,8 +57,16 @@ function generateLinks() {
         const utmMedium = 'grupo_secretaria';
         const utmTerm = contentType;
 
-        const finalUrl = `${baseUrl}?utm_source=${utmSource}&utm_medium=${utmMedium}&utm_campaign=${campaignName}&utm_content=${utmContent}&utm_term=${utmTerm}`;
+        // ETAPA 1: Monta o link final do Instagram com todos os parâmetros UTM
+        const destinationUrlWithUtms = `${baseUrl}?utm_source=${utmSource}&utm_medium=${utmMedium}&utm_campaign=${campaignName}&utm_content=${utmContent}&utm_term=${utmTerm}`;
+        
+        // ETAPA 2: Codifica o link de destino para que ele possa ser passado como um parâmetro de URL sem quebrar
+        const encodedDestination = encodeURIComponent(destinationUrlWithUtms);
+        
+        // ETAPA 3: Monta a URL da sua página de redirecionamento, passando o link codificado como o parâmetro "destino"
+        const finalUrl = `https://driosmkt.github.io/RedeDigital/redirecionando.html?destino=${encodedDestination}`;
 
+        // Cria o HTML para cada item da lista (sem alterações aqui)
         const resultItem = document.createElement('div');
         resultItem.className = 'result-item';
         resultItem.innerHTML = `
@@ -82,6 +79,7 @@ function generateLinks() {
     });
 }
 
+// O restante do código permanece o mesmo
 resultsContainer.addEventListener('click', function(e) {
     if (e.target.classList.contains('copy-btn')) {
         const button = e.target;
