@@ -57,15 +57,10 @@ function generateLinks() {
         const utmMedium = 'grupo_secretaria';
         const utmTerm = contentType;
 
-        // ETAPA 1: Monta o link final do Instagram com todos os parâmetros UTM
-        const destinationUrlWithUtms = `${baseUrl}?utm_source=${utmSource}&utm_medium=${utmMedium}&utm_campaign=${campaignName}&utm_content=${utmContent}&utm_term=${utmTerm}`;
+        // --- LÓGICA ALTERADA ---
+        // Agora o link final é o link direto do destino com os UTMs.
+        const finalUrl = `${baseUrl}?utm_source=${utmSource}&utm_medium=${utmMedium}&utm_campaign=${campaignName}&utm_content=${utmContent}&utm_term=${utmTerm}`;
         
-        // ETAPA 2: Codifica o link de destino para que ele possa ser passado como um parâmetro de URL sem quebrar
-        const encodedDestination = encodeURIComponent(destinationUrlWithUtms);
-        
-        // ETAPA 3: Monta a URL da sua página de redirecionamento, passando o link codificado como o parâmetro "destino"
-        const finalUrl = `https://driosmkt.github.io/RedeDigital/redirecionando.html?destino=${encodedDestination}`;
-
         // Cria o HTML para cada item da lista (sem alterações aqui)
         const resultItem = document.createElement('div');
         resultItem.className = 'result-item';
