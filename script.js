@@ -1,5 +1,4 @@
 // --- CONFIGURAÇÃO ---
-// Lista completa e oficial de secretarias e autarquias.
 const secretarias = [
     { name: 'Saúde', id: 'saude' },
     { name: 'Educação, Cultura e Esporte', id: 'educacao_cultura_esporte' },
@@ -59,13 +58,13 @@ function generateLinks() {
 
         const finalUrl = `${baseUrl}?utm_source=${utmSource}&utm_medium=${utmMedium}&utm_campaign=${campaignName}&utm_content=${utmContent}&utm_term=${utmTerm}`;
         
-        // --- HTML ALTERADO ---
-        // O link longo não é mais exibido. Ele é armazenado em 'data-link' no botão.
+        // --- HTML ALTERADO PARA USAR UM CAMPO INPUT ---
         const resultItem = document.createElement('div');
         resultItem.className = 'result-item';
         resultItem.innerHTML = `
             <span class="secretaria-name">${secretaria.name}</span>
-            <button class="copy-btn" data-link="${finalUrl}">Copiar</button>
+            <input type="text" class="generated-link-input" value="${finalUrl}" readonly>
+            <button class="copy-btn">Copiar</button>
         `;
         
         resultsContainer.appendChild(resultItem);
@@ -74,15 +73,17 @@ function generateLinks() {
 
 // --- LÓGICA DE CÓPIA ALTERADA ---
 resultsContainer.addEventListener('click', function(e) {
-    // Verifica se o elemento clicado é um botão de cópia
     if (e.target.classList.contains('copy-btn')) {
         const button = e.target;
-        // Pega o link do atributo 'data-link' do próprio botão
-        const linkToCopy = button.dataset.link;
+        // Pega o valor do elemento anterior ao botão, que agora é o <input>
+        const inputField = button.previousElementSibling;
+        const linkToCopy = inputField.value;
 
         navigator.clipboard.writeText(linkToCopy).then(() => {
             button.textContent = 'Copiado!';
             button.classList.add('copied');
+            // Seleciona o texto no input para feedback visual
+            inputField.select();
             setTimeout(() => {
                 button.textContent = 'Copiar';
                 button.classList.remove('copied');
