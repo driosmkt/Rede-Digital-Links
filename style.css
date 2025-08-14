@@ -1,13 +1,10 @@
 :root {
-    /* Novas cores da marca */
-    --primary-color: #0047BB;   /* Azul da logo */
-    --secondary-color: #FFC107; /* Amarelo da logo */
-    
-    /* Cores de suporte para o tema claro */
-    --dark-text: #212529;      /* Texto principal escuro */
-    --light-bg: #FFFFFF;      /* Fundo principal branco */
-    --gray-bg: #f8f9fa;       /* Fundo de containers cinza claro */
-    --border-color: #dee2e6;  /* Cor das bordas */
+    --primary-color: #0047BB;   
+    --secondary-color: #FFC107; 
+    --dark-text: #212529;      
+    --light-bg: #FFFFFF;      
+    --gray-bg: #f8f9fa;       
+    --border-color: #dee2e6;  
     --font-family: 'Poppins', sans-serif;
 }
 
@@ -28,7 +25,7 @@ body {
 }
 
 .container {
-    max-width: 900px; /* Aumentado para acomodar as duas colunas */
+    max-width: 900px; 
     margin: 0 auto;
     padding: 2rem;
     flex-grow: 1; 
@@ -97,38 +94,27 @@ button:hover {
     filter: brightness(1.05);
 }
 
-/* --- LAYOUT DE 2 COLUNAS PARA OS RESULTADOS --- */
 #resultsContainer {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Cria duas colunas de tamanho igual */
-    gap: 1rem; /* Espaço entre os cards */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 1rem; 
 }
 
+/* --- ESTILO DO CARD DE RESULTADO ALTERADO --- */
 .result-item {
-    display: flex;
-    flex-direction: column; /* Organiza o conteúdo do card na vertical */
+    display: flex; /* Coloca os itens lado a lado */
+    align-items: center; /* Alinha verticalmente */
+    justify-content: space-between; /* Espaça entre os itens */
     background-color: var(--gray-bg);
     padding: 1rem;
     border-radius: 6px;
     border: 1px solid var(--border-color);
-    gap: 0.8rem; /* Espaço entre os itens dentro do card */
+    gap: 1rem; 
 }
 
 .secretaria-name {
     font-weight: 600;
-}
-
-.generated-link {
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    background-color: #e9ecef;
-    padding: 0.5rem;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    color: #495057;
-    box-sizing: border-box;
+    flex-grow: 1; /* Faz o nome ocupar o espaço disponível */
 }
 
 .copy-btn {
@@ -136,8 +122,7 @@ button:hover {
     color: white;
     padding: 0.6rem 1rem;
     font-size: 0.9rem;
-    width: 100%; /* Botão ocupa toda a largura do card */
-    box-sizing: border-box;
+    flex-shrink: 0; /* Impede que o botão encolha */
 }
 
 .copy-btn.copied {
@@ -190,10 +175,10 @@ footer {
 /* --- RESPONSIVIDADE PARA CELULARES --- */
 @media (max-width: 768px) {
     .container {
-        padding: 1rem; /* Menos preenchimento em telas pequenas */
+        padding: 1rem; 
     }
 
     #resultsContainer {
-        grid-template-columns: 1fr; /* Volta para 1 coluna */
+        grid-template-columns: 1fr; 
     }
 }
