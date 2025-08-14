@@ -57,28 +57,28 @@ function generateLinks() {
         const utmMedium = 'grupo_secretaria';
         const utmTerm = contentType;
 
-        // --- LÓGICA ALTERADA ---
-        // Agora o link final é o link direto do destino com os UTMs.
         const finalUrl = `${baseUrl}?utm_source=${utmSource}&utm_medium=${utmMedium}&utm_campaign=${campaignName}&utm_content=${utmContent}&utm_term=${utmTerm}`;
         
-        // Cria o HTML para cada item da lista (sem alterações aqui)
+        // --- HTML ALTERADO ---
+        // O link longo não é mais exibido. Ele é armazenado em 'data-link' no botão.
         const resultItem = document.createElement('div');
         resultItem.className = 'result-item';
         resultItem.innerHTML = `
             <span class="secretaria-name">${secretaria.name}</span>
-            <span class="generated-link">${finalUrl}</span>
-            <button class="copy-btn">Copiar</button>
+            <button class="copy-btn" data-link="${finalUrl}">Copiar</button>
         `;
         
         resultsContainer.appendChild(resultItem);
     });
 }
 
-// O restante do código permanece o mesmo
+// --- LÓGICA DE CÓPIA ALTERADA ---
 resultsContainer.addEventListener('click', function(e) {
+    // Verifica se o elemento clicado é um botão de cópia
     if (e.target.classList.contains('copy-btn')) {
         const button = e.target;
-        const linkToCopy = button.previousElementSibling.textContent;
+        // Pega o link do atributo 'data-link' do próprio botão
+        const linkToCopy = button.dataset.link;
 
         navigator.clipboard.writeText(linkToCopy).then(() => {
             button.textContent = 'Copiado!';
